@@ -50,10 +50,10 @@ document.addEventListener('DOMContentLoaded', () => {
         sessionModeEl.textContent = totalSessions;
         
         //visual states
-        document.querySelector(".timer-container");
+        document.querySelector(".timer-container").classList.toggle("running", isRunning);
     }
-
     
+
 
 
 })
