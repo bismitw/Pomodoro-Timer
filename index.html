@@ -1,0 +1,127 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+    <div class="pomodoro-app">
+        <!-- Header -->
+        <header class="app-header">
+        <h1>🍅 Pomodoro</h1>
+        <button id="theme-toggle" aria-label="Toggle theme">🌙</button>
+        </header>
+
+        <!-- Timer Display -->
+        <main class="timer-container">
+        <!-- Progress Circle -->
+        <svg class="progress-circle" viewBox="0 0 300 300">
+            <circle 
+            class="progress-bg" 
+            cx="150" 
+            cy="150" 
+            r="135"
+            stroke="#e0e0e0"
+            stroke-width="10"
+            fill="none"
+            stroke-opacity="0.3"
+            />
+            <circle 
+            id="progress-arc"
+            class="progress-arc"
+            cx="150" 
+            cy="150" 
+            r="135"
+            stroke="#10b981"
+            stroke-width="10"
+            fill="none"
+            stroke-linecap="round"
+            stroke-dasharray="848"
+            stroke-dashoffset="848"
+            pathLength="1"
+            />
+        </svg>
+
+        <!-- Time Display -->
+        <div class="time-display">
+            <span id="minutes">25</span>
+            <span class="colon">:</span>
+            <span id="seconds">00</span>
+        </div>
+
+        <!-- Mode & Sessions -->
+        <div class="mode-info">
+            <div id="current-mode" class="mode work">WORK</div>
+            <div class="session-info">
+            <span id="session-count">0</span> / 4 sessions
+            </div>
+        </div>
+        </main>
+
+        <!-- Controls -->
+        <div class="controls">
+        <button id="start-btn" class="btn btn-primary" aria-label="Start timer">
+            ▶️ Start
+        </button>
+        <button id="pause-btn" class="btn btn-secondary" disabled aria-label="Pause timer">
+            ⏸️ Pause
+        </button>
+        <button id="reset-btn" class="btn btn-secondary" aria-label="Reset timer">
+            🔄 Reset
+        </button>
+        </div>
+
+        <!-- Task Input -->
+        <div class="task-section">
+        <label for="current-task">
+            Current Task
+            <input 
+            type="text" 
+            id="current-task" 
+            placeholder="What are you working on?"
+            maxlength="60"
+            />
+        </label>
+        </div>
+
+        <!-- Settings -->
+        <section class="settings" aria-label="Timer settings">
+        <h2>⚙️ Customize</h2>
+        <div class="setting-group">
+            <label>
+            Work <input type="number" id="work-minutes" value="25" min="10" max="60">
+            </label>
+            <label>
+            Short Break <input type="number" id="short-break" value="5" min="1" max="15">
+            </label>
+            <label>
+            Long Break <input type="number" id="long-break" value="15" min="5" max="30">
+            </label>
+        </div>
+        <button id="save-settings" class="btn btn-outline">💾 Save</button>
+        </section>
+
+        <!-- Stats -->
+        <div class="stats">
+        <div class="stat">
+            <span>Total Sessions:</span>
+            <span id="total-sessions">0</span>
+        </div>
+        <div class="stat">
+            <span>Total Focus:</span>
+            <span id="total-focus">0</span>min
+        </div>
+        </div>
+    </div>
+
+    <!-- Notification Sound -->
+    <audio id="notify-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcDjeO9/LDeiwFLIHO8NqKNwjZaLvt559NEAxQp+PwtmMcDjeO9/" type="audio/wav">
+    </audio>
+
+    <script src="script.js"></script>
+    </body>
+    </html>
