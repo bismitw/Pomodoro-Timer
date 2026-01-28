@@ -70,5 +70,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function pauseTimer(){
+        isRunning = false;
+        clearInterval(timerId);
+        startBtn.style.display = "inline-flex";
+        pauseBtn.style.display = "none";
+    }
+
 
 })
