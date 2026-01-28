@@ -85,4 +85,19 @@ document.addEventListener('DOMContentLoaded', () => {
         updateDisplay();
     }
 
+    //Auto next session
+    function nextSession (){
+        pauseTimer();
+        totalSessions++;
+        if(currentSession < 4 ){
+            currentSession++;
+        } else {
+            currentSession = 0; //Back to work after long break
+        }
+        timeLeft = 
+        currentSession === 0? workDuration * 60 : currentSession < 4? shortDuration * 60 : longDuration * 60;
+
+        updateDisplay();
+    }
+
 })
