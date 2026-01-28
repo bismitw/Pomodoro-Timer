@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const bellSound = document.getElementById('bell-sound');
 
     //Timer State
-    let TimeLeft = 25 * 60; //Default  25 min work
-    let TimerId = null ;
+    let timeLeft = 25 * 60; //Default  25 min work
+    let timerId = null ;
     let isRunning = false;
     let currentSession = 0; // 0 = work , 1-3 = short-break, 4 = long break
     let totalSessions = 0;
