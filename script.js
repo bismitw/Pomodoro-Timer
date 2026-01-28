@@ -77,5 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
         pauseBtn.style.display = "none";
     }
 
+    function resetTimer(){
+        pauseTimer();
+        currentSession = 0;
+        timeLeft = workDuration * 60;
+        totalSessions = 0;
+        updateDisplay();
+    }
 
 })
