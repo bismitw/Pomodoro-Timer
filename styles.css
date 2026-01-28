@@ -1,0 +1,360 @@
+    /* =========================
+    Pomodoro Timer - Simple & Clean
+    ========================= */
+
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+
+    :root {
+    --bg: #1a1a1a;
+    --surface: rgba(255, 255, 255, 0.05);
+    --border: rgba(255, 255, 255, 0.1);
+    --text: #ffffff;
+    --text-dim: rgba(255, 255, 255, 0.6);
+    --accent: #10b981;
+    --radius: 16px;
+    }
+
+    [data-theme="light"] {
+    --bg: #f5f5f5;
+    --surface: rgba(0, 0, 0, 0.03);
+    --border: rgba(0, 0, 0, 0.1);
+    --text: #1a1a1a;
+    --text-dim: rgba(0, 0, 0, 0.6);
+    }
+
+    body {
+    font-family: system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: var(--bg);
+    color: var(--text);
+    }
+
+    /* Main Container */
+    .pomodoro-app {
+    width: 100%;
+    max-width: 440px;
+    padding: 32px;
+    border-radius: var(--radius);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    }
+
+    /* Header */
+    .app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    }
+
+    h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    }
+
+    #theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: all 0.2s;
+    }
+
+    #theme-toggle:hover {
+    background: var(--border);
+    }
+
+    /* Timer Container - Fixed Alignment */
+    .timer-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    padding: 20px 0;
+    }
+
+    /* Progress Circle - Centered */
+    .progress-circle {
+    width: 280px;
+    height: 280px;
+    display: block;
+    margin: 0 auto 20px;
+    }
+
+    .progress-bg {
+    stroke: var(--border);
+    }
+
+    .progress-arc {
+    stroke: var(--accent);
+    transition: stroke-dashoffset 0.3s linear;
+    transform-origin: center;
+    transform: rotate(-90deg);
+    }
+
+    /* Time Display - Centered Above Mode Info */
+    .time-display {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: ui-monospace, monospace;
+    font-size: 4rem;
+    font-weight: 500;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 4px;
+    z-index: 10;
+    }
+
+    .colon {
+    opacity: 0.7;
+    font-size: 75%;
+    }
+
+    /* Mode Info - Below Timer */
+    .mode-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto 24px;
+    }
+
+    .mode {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    }
+
+    .mode.work {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: rgba(16, 185, 129, 0.1);
+    }
+
+    .mode.break {
+    color: #f59e0b;
+    border-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+    }
+
+    .mode.long-break {
+    color: #ef4444;
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+    }
+
+    .session-info {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    font-weight: 500;
+    }
+
+    /* Controls */
+    .controls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+    }
+
+    .btn {
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    }
+
+    .btn:hover:not(:disabled) {
+    background: var(--border);
+    transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    }
+
+    .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+    background: #059669;
+    border-color: #059669;
+    }
+
+    .btn-outline {
+    width: 100%;
+    margin-top: 12px;
+    }
+
+    /* Task Input */
+    .task-section {
+    margin-bottom: 24px;
+    }
+
+    .task-section label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    }
+
+    #current-task {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 1rem;
+    }
+
+    #current-task:focus {
+    outline: none;
+    border-color: var(--accent);
+    }
+
+    #current-task::placeholder {
+    color: var(--text-dim);
+    }
+
+    /* Settings */
+    .settings {
+    margin-bottom: 16px;
+    padding: 20px;
+    border-radius: var(--radius);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    }
+
+    .settings h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    }
+
+    .setting-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+    }
+
+    .setting-group label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    font-weight: 500;
+    }
+
+    .setting-group input {
+    width: 80px;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    text-align: center;
+    font-weight: 600;
+    }
+
+    .setting-group input:focus {
+    outline: none;
+    border-color: var(--accent);
+    }
+
+    /* Stats */
+    .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 20px;
+    border-radius: var(--radius);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    }
+
+    .stat {
+    text-align: center;
+    padding: 16px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    }
+
+    .stat span:first-child {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    font-weight: 500;
+    margin-bottom: 8px;
+    }
+
+    .stat span:last-child {
+    display: block;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--accent);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 480px) {
+    .pomodoro-app {
+        padding: 24px;
+    }
+
+    .time-display {
+        font-size: 3rem;
+    }
+
+    .progress-circle {
+        width: 240px;
+        height: 240px;
+    }
+
+    .controls {
+        grid-template-columns: 1fr;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .mode-info {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+    }
