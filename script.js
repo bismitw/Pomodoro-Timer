@@ -29,4 +29,31 @@ document.addEventListener('DOMContentLoaded', () => {
     let longDuration = 20;
 
 
+    // update display (shows time + progress circle + mode)
+    function updateDisplay() {
+        const minutes = Math.floor(timeLeft/60);
+        const seconds = timeLeft % 60;
+        minutesEl.textContent = minutes.toString().padStart(2,'0');
+        secondsEl.textContent = seconds.toString().padStart(2,'0');
+
+        //progress arc (full circle = session duration)
+        const sessionDuration = currentSession === 0? workDuration * 60 : 
+        currentSession < 4? shortDuration * 60 :
+        longDuration * 60;
+
+        const progress  = ((sessionDuration-timeLeft)/sessionDuration) * 100;
+        progressArc.style.strokeDasharray = `${progress},100`;
+
+        //Update Mode Display 
+        const modes = ["Work", "Short Break", "Short Break", "Short Break", "Long Break"];
+        currentModeEl.textContent = modes[currentSession] || "work";
+        sessionModeEl.textContent = totalSessions;
+        
+        //visual states
+        document.querySelector(".timer-container");
+    }
+
+    
+
+
 })
