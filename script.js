@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const secondsEl = document.getElementById('seconds');
     const startBtn = document.getElementById("start-btn");
     const pauseBtn = document.getElementById("pause-btn");
+    const resetBtn = document.getElementById("reset-btn");
     const currentModeEl = document.getElementById("current-mode");
     const sessionModeEl = document.getElementById("session-count");
     const progressArc = document.getElementById('progress-arc');
@@ -89,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function nextSession (){
         pauseTimer();
         totalSessions++;
+        saveState();
         if(currentSession < 4 ){
             currentSession++;
         } else {
@@ -111,7 +113,57 @@ document.addEventListener('DOMContentLoaded', () => {
             timeLeft = workDuration * 60;
             updateDisplay();
         }
+        saveState();
+    }
+    
+    //Event listeners
+    startBtn.addEventListener('click', startTimer);
+    pauseBtn.addEventListener('click', pauseTimer);
+    resetBtn.addEventListener('click', resetTimer);
+    workInput.addEventListener('input', updateSettings);
+    shortInput.addEventListener('input', updateSettings);
+    longInput.addEventListener('input', updateSettings);
+
+    //initial display 
+    updateDisplay();
+
+    //Dark/Light theme toggle + localstorage
+    const themeToggle = document.getElementById('theme-toggle');
+    if(themeToggle){
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.body.dataset.theme = savedTheme;
+
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.body.dataset.theme === 'light';
+            document.body.dataset.theme = isDark? 'dark' : 'light';
+            localStorage.setItem('theme', document.body.dataset.theme);
+        });
     }
 
-    
+    // Save/load state
+    function saveState() {
+        localStorage.setItem('pomodoro', JSON.stringify({
+            workDuration, shortDuration, longDuration, totalSessions
+        }));
+    }
+
+    function loadState(){
+        const saved = localStorage.getItem('pomodoro');
+        if(saved){
+            const data = JSON.parse(saved);
+            workDuration = data.workDuration || 25;
+            shortDuration = data.shortDuration || 5;
+            longDuration = data.longDuration || 20;
+            totalSessions = data.totalSessions || 0;
+            workInput.value = workDuration;
+            shortInput.value = shortDuration;
+            longInput.value = longDuration;
+        }
+    }
+
+    loadState();
+    updateDisplay();
+
+
 })
