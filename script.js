@@ -52,8 +52,23 @@ document.addEventListener('DOMContentLoaded', () => {
         //visual states
         document.querySelector(".timer-container").classList.toggle("running", isRunning);
     }
-    
 
+    //Timer Control
+    function startTimer(){
+        if(!isRunning){
+            isRunning = true;
+            startBtn.style.display = "none";
+            pauseBtn.style.display = "inline-flex";
+            timerId = setInterval(() => {
+                timeLeft--;
+                updateDisplay()
+                if(timeLeft<=0){
+                    bellSound.play().catch(()=>{}) //play bell sound
+                    nextSession();
+                }
+            },1000);
+        }
+    }
 
 
 })
