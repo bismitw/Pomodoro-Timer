@@ -100,4 +100,18 @@ document.addEventListener('DOMContentLoaded', () => {
         updateDisplay();
     }
 
+
+    //settings Update
+
+    function updateSettings(){
+        workDuration = parseInt(workInput.value) || 25;
+        shortDuration = parseInt(shortInput.value) || 5;
+        longDuration = parseInt(longInput.value) || 20;
+        if(!isRunning){
+            timeLeft = workDuration * 60;
+            updateDisplay();
+        }
+    }
+
+    
 })
