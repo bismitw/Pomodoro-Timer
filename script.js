@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const workInput = document.getElementById('work-duration');
     const shortInput = document.getElementById('short-duration');
     const longInput = document.getElementById('long-duration');
-    const bellSound = document.getElementById('bell-sound');
+    const bellSound = document.getElementById('notify-sound');
 
     //Timer State
     let timeLeft = 25 * 60; //Default  25 min work
@@ -27,9 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
     //Default settings ( pomodoro: 25/5/15-30) [web:13] [web:14]
     let workDuration = 25;
     let shortDuration = 5;
-    let longDuration = 20;
+    let longDuration = 15;
 
-
+     const circumference = 2 * Math.PI * 135; // 848.23
+    
     // update display (shows time + progress circle + mode)
     function updateDisplay() {
         const minutes = Math.floor(timeLeft/60);
@@ -42,12 +43,15 @@ document.addEventListener('DOMContentLoaded', () => {
         currentSession < 4? shortDuration * 60 :
         longDuration * 60;
 
-        const progress  = ((sessionDuration-timeLeft)/sessionDuration) * 100;
-        progressArc.style.strokeDasharray = `${progress},100`;
+        // Progress Calculation (Corrected for 848 circumference)
+        const offset = circumference - ((sessionDuration - timeLeft) / sessionDuration) * circumference;
+        progressArc.style.strokeDashoffset = offset;
 
         //Update Mode Display 
         const modes = ["Work", "Short Break", "Short Break", "Short Break", "Long Break"];
-        currentModeEl.textContent = modes[currentSession] || "work";
+        // Switch classes for CSS colors
+        currentModeEl.className = 'mode ' + (currentSession === 0 ? 'work' : 'break');
+        if (currentSession === 4) currentModeEl.className = 'mode long-break';
         sessionModeEl.textContent = totalSessions;
         
         //visual states
@@ -159,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
             workInput.value = workDuration;
             shortInput.value = shortDuration;
             longInput.value = longDuration;
+            timeLeft = workDuration * 60; //Sync timer with loaded settings
         }
     }
 
